@@ -1,6 +1,7 @@
 package com.example.adapter.view
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -9,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.adapter.R
 import com.example.adapter.adapter.ViewAdapter
 import com.example.adapter.databinding.ActivityMainBinding
-import com.example.adapter.model.ServerModel
 import com.example.adapter.viewModel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -28,7 +28,14 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        adapter = ViewAdapter(serverModel = emptyList())
+        adapter = ViewAdapter(serverModel = emptyList()) { onClick->
+            viewModel.selectedItem.id
+
+            Toast.makeText(this,
+                "selected ${onClick.name}",
+                Toast.LENGTH_SHORT)
+                .show()
+        }
         binding.recyclerViewServers.adapter = adapter
 
         viewModel.serverModelList.observe(this) {response->
