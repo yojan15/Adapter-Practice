@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.adapter.R
 import com.example.adapter.model.ServerModel
 
-class ViewAdapter(private var serverModel : List<ServerModel>) : RecyclerView.Adapter<ViewAdapter.ServerViewHolder>() {
+class ViewAdapter(
+    private var serverModel : List<ServerModel>,
+    private val onClick : (ServerModel) -> Unit
+) : RecyclerView.Adapter<ViewAdapter.ServerViewHolder>() {
 
     inner class ServerViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         var tvName : TextView = itemView.findViewById(R.id.tvName)
@@ -30,6 +33,10 @@ class ViewAdapter(private var serverModel : List<ServerModel>) : RecyclerView.Ad
         val server = serverModel[position]
         holder.tvName.text = server.name
         holder.tvValue.text = server.value
+
+        holder.itemView.setOnClickListener {
+            onClick(server)
+        }
     }
 
     override fun getItemCount(): Int = serverModel.size
